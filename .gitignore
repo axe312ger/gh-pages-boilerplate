@@ -1,0 +1,6 @@
+ assets/vendor
+.publish
+dist
+dist-minified
+node_modules
+.DS_Store
