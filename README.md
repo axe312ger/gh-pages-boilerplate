@@ -1,5 +1,7 @@
 gh-pages-boilerplate
 ========
+[![devDependency Status](https://david-dm.org/axe312ger/gh-pages-boilerplate/dev-status.svg)](https://david-dm.org/axe312ger/gh-pages-boilerplate#info=devDependencies)
+
 This is a slim boilerplate for small sites and projects which will be hosted on github.io. It is basically a simple but feature rich gulp workflow including automatic deployment to GitHub Pages.
 
 ## Features
