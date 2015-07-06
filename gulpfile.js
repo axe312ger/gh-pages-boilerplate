@@ -15,12 +15,13 @@ var open = require('gulp-open');
 
 // Default task and watch configuration
 gulp.task('default',
-  ['jade', 'sass', 'lint', 'imagemin', 'dev-server', 'watch']
+  ['jade', 'sass', 'vendor', 'lint', 'imagemin', 'dev-server', 'watch']
 );
 
 gulp.task('watch', function() {
   gulp.watch('./assets/sass/**/*.sass', ['sass']);
   gulp.watch('./assets/js/**/*.js', ['lint']);
+  gulp.watch('./assets/vendor/**/*', ['vendor']);
   gulp.watch('./assets/jade/**/*.jade', ['jade']);
   gulp.watch('./assets/images/**/*', ['imagemin']);
 });
@@ -44,6 +45,12 @@ gulp.task('sass', function () {
     }))
     .pipe(autoprefixer('last 2 version'))
     .pipe(gulp.dest('./dist/assets/css'));
+});
+
+// Keep vendor libraries & images.json in sync
+gulp.task('vendor', function() {
+  return gulp.src('./assets/vendor/**/*')
+    .pipe(gulp.dest('./dist/assets/vendor'));
 });
 
 // Javscript linting
