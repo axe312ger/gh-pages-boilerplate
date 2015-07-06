@@ -47,7 +47,7 @@ gulp.task('sass', function () {
     .pipe(gulp.dest('./dist/assets/css'));
 });
 
-// Keep vendor libraries & images.json in sync
+// Keep vendor libraries in sync
 gulp.task('vendor', function() {
   return gulp.src('./assets/vendor/**/*')
     .pipe(gulp.dest('./dist/assets/vendor'));
@@ -95,7 +95,7 @@ gulp.task('deploy-minifycss', ['deploy-prepare'], function() {
 
 // Development server
 gulp.task('dev-server', function () {
-  var server = gls.static(['dist']);
+  var server = gls.static(['dist'], '3001');
   server.start();
 
   gulp.watch('./dist/**/*', function () {
@@ -103,5 +103,5 @@ gulp.task('dev-server', function () {
   });
 
   gulp.src('./dist/index.html')
-    .pipe(open('', {url: 'http://localhost:3000'}));
+    .pipe(open('', {url: 'http://localhost:3001'}));
 });
