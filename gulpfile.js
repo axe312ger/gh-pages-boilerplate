@@ -14,17 +14,10 @@ var gls = require('gulp-live-server');
 var open = require('open');
 var plumber = require('gulp-plumber');
 
-// Bind gulp-plumber to all tasks
-var _gulpSrc = gulp.src;
-gulp.src = function() {
-  return _gulpSrc.apply(gulp, arguments)
-  .pipe(plumber({
-    errorHandler: function(err) {
-      console.log(err);
-      this.emit('end');
-    }
-  }))
-};
+function swallowError(err) {
+  console.log(err);
+  this.emit('end');
+}
 
 // Default task and watch configuration
 gulp.task('default',
@@ -42,6 +35,7 @@ gulp.task('watch', function() {
 // Generate HTML via jade
 gulp.task('jade', function() {
   return gulp.src('./assets/jade/**/*.jade')
+    .pipe(plumber({ errorHandler: swallowError }))
     .pipe(jade({
       pretty: true
     }))
@@ -51,6 +45,7 @@ gulp.task('jade', function() {
 // Generate css via libsass
 gulp.task('sass', function () {
   return gulp.src('./assets/sass/**/*.sass')
+    .pipe(plumber({ errorHandler: swallowError }))
     .pipe(sass({
       indentedSyntax: true,
       errLogToConsole: true,
