@@ -12,6 +12,13 @@ var uglify = require('gulp-uglify');
 var minifyCSS = require('gulp-minify-css');
 var gls = require('gulp-live-server');
 var open = require('open');
+var plumber = require('gulp-plumber');
+var gutil = require('gulp-util');
+
+function swallowError(err) {
+  gutil.log(err);
+  this.emit('end');
+}
 
 // Default task and watch configuration
 gulp.task('default',
@@ -29,6 +36,7 @@ gulp.task('watch', function () {
 // Generate HTML via jade
 gulp.task('jade', function () {
   return gulp.src('./assets/jade/**/*.jade')
+    .pipe(plumber(swallowError))
     .pipe(jade({
       pretty: true
     }))
@@ -38,6 +46,7 @@ gulp.task('jade', function () {
 // Generate css via libsass
 gulp.task('sass', function () {
   return gulp.src('./assets/sass/**/*.sass')
+    .pipe(plumber(swallowError))
     .pipe(sass({
       indentedSyntax: true,
       errLogToConsole: true,
