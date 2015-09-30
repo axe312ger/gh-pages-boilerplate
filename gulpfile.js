@@ -11,7 +11,7 @@ var ghPages = require('gulp-gh-pages');
 var uglify = require('gulp-uglify');
 var minifyCSS = require('gulp-minify-css');
 var gls = require('gulp-live-server');
-var open = require('gulp-open');
+var open = require('open');
 
 // Default task and watch configuration
 gulp.task('default',
@@ -102,6 +102,5 @@ gulp.task('dev-server', function () {
     server.notify.apply(server, arguments);
   });
 
-  gulp.src('./dist/index.html')
-    .pipe(open('', {url: 'http://localhost:3001'}));
+  open('http://localhost:3001');
 });
