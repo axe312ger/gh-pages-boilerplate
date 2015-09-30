@@ -12,6 +12,19 @@ var uglify = require('gulp-uglify');
 var minifyCSS = require('gulp-minify-css');
 var gls = require('gulp-live-server');
 var open = require('open');
+var plumber = require('gulp-plumber');
+
+// Bind gulp-plumber to all tasks
+var _gulpSrc = gulp.src;
+gulp.src = function() {
+  return _gulpSrc.apply(gulp, arguments)
+  .pipe(plumber({
+    errorHandler: function(err) {
+      console.log(err);
+      this.emit('end');
+    }
+  }))
+};
 
 // Default task and watch configuration
 gulp.task('default',
