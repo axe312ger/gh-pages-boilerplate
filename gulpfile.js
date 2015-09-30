@@ -13,9 +13,10 @@ var minifyCSS = require('gulp-minify-css');
 var gls = require('gulp-live-server');
 var open = require('open');
 var plumber = require('gulp-plumber');
+var gutil = require('gulp-util');
 
 function swallowError(err) {
-  console.log(err);
+  gutil.log(err);
   this.emit('end');
 }
 
@@ -35,7 +36,7 @@ gulp.task('watch', function() {
 // Generate HTML via jade
 gulp.task('jade', function() {
   return gulp.src('./assets/jade/**/*.jade')
-    .pipe(plumber({ errorHandler: swallowError }))
+    .pipe(plumber(swallowError))
     .pipe(jade({
       pretty: true
     }))
@@ -45,7 +46,7 @@ gulp.task('jade', function() {
 // Generate css via libsass
 gulp.task('sass', function () {
   return gulp.src('./assets/sass/**/*.sass')
-    .pipe(plumber({ errorHandler: swallowError }))
+    .pipe(plumber(swallowError))
     .pipe(sass({
       indentedSyntax: true,
       errLogToConsole: true,
