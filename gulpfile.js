@@ -18,7 +18,7 @@ gulp.task('default',
   ['jade', 'sass', 'vendor', 'lint', 'imagemin', 'dev-server', 'watch']
 );
 
-gulp.task('watch', function() {
+gulp.task('watch', function () {
   gulp.watch('./assets/sass/**/*.sass', ['sass']);
   gulp.watch('./assets/js/**/*.js', ['lint']);
   gulp.watch('./assets/vendor/**/*', ['vendor']);
@@ -27,7 +27,7 @@ gulp.task('watch', function() {
 });
 
 // Generate HTML via jade
-gulp.task('jade', function() {
+gulp.task('jade', function () {
   return gulp.src('./assets/jade/**/*.jade')
     .pipe(jade({
       pretty: true
@@ -48,13 +48,13 @@ gulp.task('sass', function () {
 });
 
 // Keep vendor libraries in sync
-gulp.task('vendor', function() {
+gulp.task('vendor', function () {
   return gulp.src('./assets/vendor/**/*')
     .pipe(gulp.dest('./dist/assets/vendor'));
 });
 
 // Javscript linting
-gulp.task('lint', function() {
+gulp.task('lint', function () {
   return gulp.src('./assets/js/**/*.js')
     .pipe(jshint())
     .pipe(jshint.reporter('default'))
@@ -71,23 +71,23 @@ gulp.task('imagemin', function () {
 });
 
 // Deploy to Github pages
-gulp.task('deploy', ['deploy-minifyjs', 'deploy-minifycss'], function() {
+gulp.task('deploy', ['deploy-minifyjs', 'deploy-minifycss'], function () {
   return gulp.src('./dist-minified/**/*')
     .pipe(ghPages());
 });
 
-gulp.task('deploy-prepare', function() {
+gulp.task('deploy-prepare', function () {
   return gulp.src('./dist/**/*')
     .pipe(gulp.dest('./dist-minified'));
 });
 
-gulp.task('deploy-minifyjs', ['deploy-prepare'], function() {
+gulp.task('deploy-minifyjs', ['deploy-prepare'], function () {
   return gulp.src('./dist-minified/**/*.js')
     .pipe(uglify())
     .pipe(gulp.dest('./dist-minified'));
 });
 
-gulp.task('deploy-minifycss', ['deploy-prepare'], function() {
+gulp.task('deploy-minifycss', ['deploy-prepare'], function () {
   return gulp.src('./dist-minified/**/*.css')
     .pipe(minifyCSS())
     .pipe(gulp.dest('./dist-minified'));
