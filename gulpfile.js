@@ -12,11 +12,28 @@ var uglify = require('gulp-uglify');
 var minifyCSS = require('gulp-minify-css');
 var gls = require('gulp-live-server');
 var open = require('open');
+var spawn = require('child_process').spawn;
 
 // Default task and watch configuration
-gulp.task('default',
-  ['jade', 'sass', 'vendor', 'lint', 'imagemin', 'dev-server', 'watch']
-);
+gulp.task('default', function() {
+  var process;
+
+  // Restart when gulpfile changes
+  function restart() {
+    if (process) {
+      process.kill();
+      process = spawn('gulp', ['tasks'], { stdio: 'inherit' });
+    } else {
+      // Only open browser on 1st startup
+      process = spawn('gulp', ['tasks', 'open'], { stdio: 'inherit' });
+    }
+  }
+
+  gulp.watch('gulpfile.js', restart);
+  restart();
+});
+
+gulp.task('tasks', ['jade', 'sass', 'vendor', 'lint', 'imagemin', 'dev-server', 'watch']);
 
 gulp.task('watch', function() {
   gulp.watch('./assets/sass/**/*.sass', ['sass']);
@@ -62,7 +79,7 @@ gulp.task('lint', function() {
 });
 
 // Minimize images without quality loss
-gulp.task('imagemin', function () {
+gulp.task('imagemin', function() {
   var dest = './dist/assets/images';
   return gulp.src('./assets/images/**/*')
     .pipe(newer(dest))
@@ -94,13 +111,15 @@ gulp.task('deploy-minifycss', ['deploy-prepare'], function() {
 });
 
 // Development server
-gulp.task('dev-server', function () {
+gulp.task('dev-server', function() {
   var server = gls.static(['dist'], '3001');
   server.start();
 
   gulp.watch('./dist/**/*', function () {
     server.notify.apply(server, arguments);
   });
+});
 
+gulp.task('open', function() {
   open('http://localhost:3001');
 });
